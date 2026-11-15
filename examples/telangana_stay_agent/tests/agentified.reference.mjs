@@ -17,7 +17,7 @@ import { StubElement } from "./stub_element.mjs";
 import { StubOption } from "./stub_option.mjs";
 import { ScriptedModel } from "./scripted_model.mjs";
 
-const NETWORK_NAME = "tidewhistle_guesthouse";
+const NETWORK_NAME = "telangana_stay_assistant";
 const READ_ACTION = "get_guesthouse_state";
 const IRREVERSIBLE_ACTION = "place_booking";
 const CANCEL_ACTION = "cancel_booking";

@@ -15,7 +15,7 @@ import { StubDocument } from "./stub_document.mjs";
 import { StubOption } from "./stub_option.mjs";
 import { ScriptedModel } from "./scripted_model.mjs";
 
-const NETWORK_NAME = "tidewhistle_guesthouse";
+const NETWORK_NAME = "telangana_stay_assistant";
 const BASE = "http://localhost:8080";
 const TODAY = "2026-11-11";
 

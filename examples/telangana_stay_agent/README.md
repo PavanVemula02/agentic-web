@@ -1,11 +1,10 @@
-# Anantha Weekend Stay Agent
+## Connected agent networks
 
-Anantha Weekend Stay is a fictional hackathon demonstration located in
-Shankarpalle, Telangana. Its browser-based agent helps visitors explore
-accommodation options and complete simulated reservations.
+No remote partner network is enabled in the Day 3 build.
 
-No real reservation is created, no payment is collected, and availability
-exists only in the browser's in-memory demonstration state..
+A Telangana Experience Guide can be connected later after its public network,
+bridge page, CORS behavior, consent flow and allowed origin have been tested.
+The current stay assistant does not claim to book tours or arrange transport.
 
 From the repository root, run:
 
@@ -31,7 +30,7 @@ don't run JavaScript modules from `file://` pages.
    special requests, then select **Confirm booking** to get a confirmation code.
 5. Under **Manage my booking**, enter the code and your last name to see the
    booking and what cancelling it today would cost, then cancel it.
-6. Under **Ask Tidewhistle Guesthouse**, open **⚙ AI model settings**, paste
+6. Under **Ask Anantha Weekend Stay**, open **⚙ AI model settings**, paste
    your own [Otari](https://otari.ai) API key and select **Save and start**. The
    site uses hosted Otari (`https://api.otari.ai/api/v1`) with
    `alibaba/qwen3.8-flash` by default. For another provider, select it in the
@@ -88,7 +87,7 @@ should say so and give the tour site's link from this page. It should do the
 same when the tour site is not running.
 
 Other agent sites can call this network at
-`http://127.0.0.1:8080/tidewhistle_guesthouse`. It then runs in their
+`http://127.0.0.1:8080/telangana_stay_assistant`. It then runs in their
 visitor's browser with none of this site's functions, and should point to this
 page for availability and bookings. Their visitor also gets a card for the
 tour site if this network asks it.
@@ -104,11 +103,11 @@ node --test "examples/guesthouse_agentified/tests/*.test.mjs"
 The tests use the real runtime and page code with a scripted model, and call no
 LLM provider. One test prints how many characters of system prompt and tool
 definitions each model call sends. After changing
-`tidewhistle_guesthouse.hocon` or `agent-manifest.json`, rebuild the generated
+`telangana_stay_assistant.hocon` or `agent-manifest.json`, rebuild the generated
 files with the skill's `scripts/build_network.mjs` (see the comment at the top
 of the `.hocon` file).
 
-In a browser, also look up `TW-7KQ2` / `Pell` and then `TW-7KQ2` / `Pel` in
+In a browser, also look up `AWS-7KQ2` / `Guest` and then `AWS-7KQ2` / `Wrong` in
 **Manage my booking**, and run the read check in "Check without a key" in the
 skill's `references/bundle_and_hosting.md` for `get_guesthouse_state`:
 `managedBooking` must be null.
@@ -137,8 +136,8 @@ skill's `references/bundle_and_hosting.md` for `get_guesthouse_state`:
   bookings.
 - `site.js`: boots the assistant and shows its confirmation dialog.
 - `site-actions.js`: registers the operations the assistant can call.
-- `tidewhistle_guesthouse.hocon`: the agent network's source.
-- `tidewhistle_guesthouse.network.json`, `agent-mcp.json` and `.well-known/`:
+- `telangana_stay_assistant.hocon`: the agent network's source.
+- `telangana_stay_assistant.network.json`, `agent-mcp.json` and `.well-known/`:
   generated from the `.hocon` file and the manifest. Do not edit them by hand.
 - `bridge/`: the page other agent sites load in a hidden frame before they run
   this network, with its own manifest, which shares none of this site's
