@@ -2,13 +2,13 @@
   "protocol": "nsdeploy-link/v1",
   "exports": [
     {
-      "network": "tidewhistle_guesthouse",
-      "front_man": "tidewhistle_assistant",
+      "network": "telangana_stay_assistant",
+      "front_man": "stay_coordinator",
       "aliases": [
-        "tidewhistle_guesthouse",
-        "tidewhistle_assistant"
+        "telangana_stay_assistant",
+        "stay_coordinator"
       ],
-      "url": "tidewhistle_guesthouse"
+      "url": "telangana_stay_assistant"
     }
   ],
   "imports": [],
