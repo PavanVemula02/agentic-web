@@ -9,7 +9,7 @@ import { StubDocument } from "./stub_document.mjs";
 import { StubOption } from "./stub_option.mjs";
 
 const BASE = "http://localhost:8081";
-const NETWORK_NAME = "marrow_point_harbor_tours";
+const NETWORK_NAME = "telangana_experience_guide";
 const TODAY = "2026-11-11";
 
 /*

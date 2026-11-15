@@ -41,7 +41,7 @@ const { App } = await import("../js/app.js");
  */
 export class SiteHarness {
   /** The network name, which is also the .hocon file name. */
-  static NETWORK_NAME = "marrow_point_harbor_tours";
+  static NETWORK_NAME = "telangana_experience_guide";
 
   /** The page's address in the tests. */
   static BASE = BASE;

@@ -1,21 +1,23 @@
 {
-  "brand": "Marrow Point Harbor Tours Assistant",
+  "brand": "Telangana Experience Guide",
   "networks": [
     {
-      "name": "marrow_point_harbor_tours",
-      "front_man": "harbor_tours_assistant",
-      "hocon": "./marrow_point_harbor_tours.network.json",
+      "name": "telangana_experience_guide",
+      "front_man": "experience_coordinator",
+      "hocon": "./telangana_experience_guide.network.json",
       "description": "Ask about our boat trips and sea wall walk, find times and prices, fill your basket, and reserve or cancel trips.",
       "tags": [
         "agentified-website"
       ],
       "sample_queries": [
-        "Which trips welcome dogs, and which have step-free boarding?",
-        "What could 2 adults and a 3-year-old do next Saturday, and what would it cost?",
-        "Put the 2 pm Seal Rocks Cruise two weeks from today in my basket for 2 adults and 1 child.",
-        "Cancel reservation HT-3MVK under the last name Thorne.",
-        "Where can we stay nearby?",
-        "Can I buy a gift voucher or book a fishing trip with you?"
+        "What fictional experiences are available and how much does each cost?",
+        "Which activity is suitable for a family with a 7-year-old child?",
+        "Which activities are available in the morning?",
+        "Recommend a morning activity for two eligible visitors under INR 4,000.",
+        "Put the Shankarpalle Heritage Walk in my basket for two adults.",
+        "Create a demo reservation for the Family Nature Trail.",
+        "Look up reservation TEG-3MVK under the last name Visitor.",
+        "Which activities welcome dogs and what accessibility information is available?"
       ]
     }
   ],
@@ -24,18 +26,16 @@
     "mock": false,
     "byok_router": "https://api.otari.ai/api/v1"
   },
-  "allowed_peers": [
-    "http://127.0.0.1:8080"
-  ],
+  "allowed_peers": [],
   "peer_policy": {
     "mode": "closed",
     "deny_origins": [],
-    "note": "Calls only the partner sites in allowed_peers, after the visitor agrees, plus page-local actions."
+    "note": "No remote peer network is enabled yet."
   },
   "agent_mcp": {
     "protocol": "nsdeploy-agent-mcp/v1",
-    "network": "marrow_point_harbor_tours",
-    "front_man": "harbor_tours_assistant",
+    "network": "telangana_experience_guide",
+    "front_man": "experience_coordinator",
     "available": false,
     "reason": "This is a static bundle; a public MCP facade requires an application host."
   },
@@ -46,13 +46,13 @@
     "protocol": "nsdeploy-link/v1",
     "exports": [
       {
-        "network": "marrow_point_harbor_tours",
-        "front_man": "harbor_tours_assistant",
+        "network": "telangana_experience_guide",
+        "front_man": "experience_coordinator",
         "aliases": [
-          "marrow_point_harbor_tours",
-          "harbor_tours_assistant"
+          "telangana_experience_guide",
+          "experience_coordinator"
         ],
-        "url": "marrow_point_harbor_tours"
+        "url": "telangana_experience_guide"
       }
     ],
     "imports": [],
