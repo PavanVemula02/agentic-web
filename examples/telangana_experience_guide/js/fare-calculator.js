@@ -7,10 +7,11 @@ import { TourData } from "./tour-data.js";
  */
 export class FareCalculator {
   /** Formats dollar amounts such as "$38.00". */
-  static DOLLARS = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
+  static DOLLARS = new Intl.NumberFormat("en-IN", {
+  style: "currency",
+  currency: "INR",
+  maximumFractionDigits: 0,
+});
 
   /**
    * Price a party on a tour. The party must already follow the rules.
