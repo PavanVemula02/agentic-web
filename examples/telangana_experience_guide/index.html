@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta
+      name="description"
+      content="Explore fictional activities around Shankarpalle, Telangana by price, duration, age suitability and time of day. Availability and reservations are simulated."
+    >
+
+    <title>
+      Telangana Experience Guide | Fictional Activities Around Shankarpalle
+    </title>
+
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css">
+
+    <script type="module" src="js/app.js"></script>
+    <script type="module" src="site.js"></script>
+  </head>
+
+  <body>
+    <header>
+      <a class="brand" href="index.html">
+        Telangana <span>Experience Guide</span>
+      </a>
+
+      <nav aria-label="Main navigation">
+        <a href="#trips">Experiences</a>
+        <a href="#find">Find</a>
+        <a href="#basket">Basket</a>
+        <a href="#manage">Manage reservation</a>
+        <a href="#assistant">Ask us</a>
+        <a href="policies.html">Good to know</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="welcome">
+        <p class="eyebrow">
+          Shankarpalle, Telangana
+        </p>
+
+        <h1 id="welcome">
+          Discover fictional experiences around Shankarpalle.
+        </h1>
+
+        <p>
+          Telangana Experience Guide helps visitors explore fictional local
+          activities by price, duration, age suitability, accessibility and
+          time of day.
+        </p>
+
+        <p id="demo-note" class="demo-notice" role="note">
+          Hackathon demonstration only. Activities, availability and
+          reservations are simulated. No real activity is reserved, no payment
+          is collected, and demo data remains only in this browser session.
+        </p>
+      </section>
+
+      <section id="trips" aria-labelledby="trips-heading">
+        <h2 id="trips-heading">Experiences and prices</h2>
+
+        <p id="prices-note">
+          Prices are shown per eligible visitor in Indian rupees. Activity age
+          restrictions, schedules and capacity come from the demonstration
+          catalog. No harbor dues apply.
+        </p>
+
+        <div id="tour-list" class="tour-list"></div>
+
+        <noscript>
+          <p>
+            Please enable JavaScript to view the fictional experiences,
+            calculate prices and create a demo reservation.
+          </p>
+        </noscript>
+      </section>
+
+      <div class="booking-layout">
+        <section id="find" aria-labelledby="find-heading">
+          <h2 id="find-heading">Find an experience</h2>
+
+          <form id="find-form" novalidate>
+            <label for="find-date">Date</label>
+            <input id="find-date" type="date" required>
+
+            <fieldset id="find-tickets" class="tickets" tabindex="-1">
+              <legend>Visitors</legend>
+
+              <div class="field-row">
+                <div class="field">
+                  <label for="find-adults">Adults aged 16 and over</label>
+                  <select id="find-adults"></select>
+                </div>
+
+                <div class="field">
+                  <label for="find-children">Children aged 4 to 15</label>
+                  <select id="find-children"></select>
+                </div>
+
+                <div class="field">
+                  <label for="find-under4s">Children under 4</label>
+                  <select id="find-under4s"></select>
+                </div>
+              </div>
+            </fieldset>
+
+            <p id="booking-note" class="note">
+              Each experience has its own minimum-age rule. The Sunrise Lake
+              Experience is for visitors aged 10 or over, while the Family
+              Nature Trail is for visitors aged 6 or over. The website validates
+              the selected group before adding an activity to the basket.
+            </p>
+
+            <button type="submit">Show experiences</button>
+          </form>
+
+          <ul
+            id="departure-list"
+            class="results"
+            aria-label="Available experience departures"
+          ></ul>
+        </section>
+
+        <section
+          id="basket"
+          class="panel"
+          aria-labelledby="basket-heading"
+        >
+          <h2 id="basket-heading">Your demo basket</h2>
+
+          <p class="demo-notice" role="note">
+            Adding an activity to this basket does not reserve it. Review the
+            activities, visitor counts and INR total before creating a
+            browser-only demo reservation.
+          </p>
+
+          <ul
+            id="reserve-basket"
+            class="basket"
+            tabindex="-1"
+            aria-label="Selected experiences"
+          ></ul>
+
+          <p id="basket-total"></p>
+
+          <form id="reserve-form" novalidate>
+            <fieldset>
+              <legend>Your details</legend>
+
+              <div class="field-row">
+                <div class="field">
+                  <label for="reserve-firstName">First name</label>
+                  <input
+                    id="reserve-firstName"
+                    autocomplete="given-name"
+                    maxlength="60"
+                    required
+                  >
+                </div>
+
+                <div class="field">
+                  <label for="reserve-lastName">Last name</label>
+                  <input
+                    id="reserve-lastName"
+                    autocomplete="family-name"
+                    maxlength="60"
+                    required
+                  >
+                </div>
+              </div>
+
+              <label for="reserve-email">Email</label>
+              <input
+                id="reserve-email"
+                type="email"
+                autocomplete="email"
+                maxlength="120"
+                required
+              >
+
+              <label for="reserve-phone">Mobile phone</label>
+              <input
+                id="reserve-phone"
+                type="tel"
+                autocomplete="tel"
+                maxlength="20"
+                required
+              >
+
+              <p id="phone-note" class="note">
+                This contact information is used only by the in-browser
+                demonstration. No real call, text message or email is sent.
+              </p>
+
+              <label for="reserve-notes">Notes (optional)</label>
+              <textarea
+                id="reserve-notes"
+                rows="3"
+                maxlength="300"
+                placeholder="Accessibility needs or other demonstration notes"
+              ></textarea>
+            </fieldset>
+
+            <p id="payment-note" class="note">
+              No payment is collected. Confirming creates only a temporary
+              demonstration reservation in the current browser session.
+            </p>
+
+            <button type="submit">Create demo reservation</button>
+          </form>
+
+          <div
+            id="confirmation"
+            class="confirmation"
+            tabindex="-1"
+            hidden
+          ></div>
+        </section>
+      </div>
+
+      <section id="manage" aria-labelledby="manage-heading">
+        <h2 id="manage-heading">Manage my demo reservation</h2>
+
+        <p>
+          Enter the reservation code and matching last name to view or cancel
+          a browser-only demonstration reservation.
+        </p>
+
+        <form id="manage-form" class="field-row" novalidate>
+          <div class="field">
+            <label for="manage-code">Reservation code</label>
+            <input
+              id="manage-code"
+              autocomplete="off"
+              maxlength="12"
+              placeholder="TEG-XXXX"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label for="manage-lastName">Last name</label>
+            <input
+              id="manage-lastName"
+              autocomplete="family-name"
+              maxlength="60"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <button type="submit">Find reservation</button>
+          </div>
+        </form>
+
+        <div
+          id="manage-result"
+          class="manage-result"
+          tabindex="-1"
+        ></div>
+
+        <p id="manage-note" class="note">
+          Demo reservations cannot be changed. Cancel the existing reservation
+          and create another demonstration reservation if you need a different
+          activity, date or visitor count. Review
+          <a href="policies.html#booking">booking and cancellation information</a>
+          first.
+        </p>
+      </section>
+
+      <section id="staying" aria-labelledby="staying-heading">
+        <h2 id="staying-heading">Staying near Shankarpalle</h2>
+
+        <p id="staying-note">
+          The Telangana Stay Assistant may be connected as a peer agent later.
+          The current Day 4 build does not send personal information to another
+          website and does not create accommodation bookings.
+        </p>
+      </section>
+
+      <section id="assistant" class="assistant" aria-labelledby="assistant-heading">
+        <h2 id="assistant-heading">Ask Telangana Experience Guide</h2>
+
+        <p>
+          Ask about fictional activities, prices, duration, age suitability,
+          accessibility and departure times. The assistant can also help
+          update the visible basket and create or cancel a browser-only demo
+          reservation.
+        </p>
+
+        <p class="assistant-note">
+          Your messages and relevant page data are sent to the LLM provider
+          you configure below. You control the provider and credentials.
+          Consequential actions require browser confirmation before execution.
+        </p>
+
+        <p id="assistant-status" role="status">
+          Connecting the assistant… If this message remains visible, the
+          assistant could not load. You can still use the page directly.
+        </p>
+
+        <div id="agent-app">
+          <div data-ns-slot="header"></div>
+
+          <div class="assistant-panels">
+            <div data-ns-slot="chat"></div>
+            <div data-ns-slot="agents"></div>
+          </div>
+
+          <div data-ns-slot="settings"></div>
+        </div>
+      </section>
+
+      <p
+        id="status"
+        class="visually-hidden"
+        role="status"
+        aria-live="polite"
+      ></p>
+    </main>
+
+    <footer>
+      <p id="contact-line">
+        Telangana Experience Guide · Shankarpalle, Telangana · Fictional
+        hackathon demonstration
+      </p>
+
+      <p id="hours-line">
+        <a href="policies.html">Good to know</a>
+        · No real activities, reservations, messages or payments
+      </p>
+    </footer>
+  </body>
+</html>

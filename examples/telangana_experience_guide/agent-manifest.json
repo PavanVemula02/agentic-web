@@ -1,0 +1,86 @@
+{
+  "brand": "Telangana Experience Guide",
+  "networks": [
+    {
+      "name": "telangana_experience_guide",
+      "front_man": "experience_coordinator",
+      "hocon": "./telangana_experience_guide.network.json",
+      "description": "Ask about our boat trips and sea wall walk, find times and prices, fill your basket, and reserve or cancel trips.",
+      "tags": [
+        "agentified-website"
+      ],
+      "sample_queries": [
+        "What fictional experiences are available and how much does each cost?",
+        "Which activity is suitable for a family with a 7-year-old child?",
+        "Which activities are available in the morning?",
+        "Recommend a morning activity for two eligible visitors under INR 4,000.",
+        "Put the Shankarpalle Heritage Walk in my basket for two adults.",
+        "Create a demo reservation for the Family Nature Trail.",
+        "Look up reservation TEG-3MVK under the last name Visitor.",
+        "Which activities welcome dogs and what accessibility information is available?"
+      ]
+    }
+  ],
+  "llm_router": {
+    "base_url": "https://api.otari.ai/api/v1",
+    "mock": false,
+    "byok_router": "https://api.otari.ai/api/v1"
+  },
+  "allowed_peers": [],
+  "peer_policy": {
+    "mode": "closed",
+    "deny_origins": [],
+    "note": "No remote peer network is enabled yet."
+  },
+  "agent_mcp": {
+    "protocol": "nsdeploy-agent-mcp/v1",
+    "network": "telangana_experience_guide",
+    "front_man": "experience_coordinator",
+    "available": false,
+    "reason": "This is a static bundle; a public MCP facade requires an application host."
+  },
+  "theme": {
+    "primary": "#1f3c68"
+  },
+  "linking": {
+    "protocol": "nsdeploy-link/v1",
+    "exports": [
+      {
+        "network": "telangana_experience_guide",
+        "front_man": "experience_coordinator",
+        "aliases": [
+          "telangana_experience_guide",
+          "experience_coordinator"
+        ],
+        "url": "telangana_experience_guide"
+      }
+    ],
+    "imports": [],
+    "link_updates": {
+      "mode": "browser-local"
+    }
+  },
+  "deployment": {
+    "mode": "static",
+    "self_contained_runtime": true,
+    "browser_mock": false,
+    "direct_byok": true,
+    "direct_mcp_requires_cors": true,
+    "public_mcp_facade": false
+  },
+  "actions": {
+    "version": 1,
+    "module": "./site-actions.js",
+    "bridge": "./bridge/action-bridge.html",
+    "agentTools": [
+      "get_tours_state",
+      "get_good_to_know",
+      "find_departures",
+      "add_trip_to_basket",
+      "remove_trip_from_basket",
+      "reserve_basket",
+      "look_up_reservation",
+      "cancel_reservation"
+    ]
+  }
+}

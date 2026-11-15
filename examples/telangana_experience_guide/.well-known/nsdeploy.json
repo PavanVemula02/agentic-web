@@ -1,0 +1,18 @@
+{
+  "protocol": "nsdeploy-link/v1",
+  "exports": [
+    {
+      "network": "telangana_experience_guide",
+      "front_man": "experience_coordinator",
+      "aliases": [
+        "telangana_experience_guide",
+        "experience_coordinator"
+      ],
+      "url": "telangana_experience_guide"
+    }
+  ],
+  "imports": [],
+  "link_updates": {
+    "mode": "browser-local"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "protocol": "nsdeploy-agent-mcp/v1",
+  "network": "telangana_experience_guide",
+  "front_man": "experience_coordinator",
+  "available": false,
+  "reason": "This is a static bundle; a public MCP facade requires an application host."
+}

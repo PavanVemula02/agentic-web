@@ -1,0 +1,10 @@
+{
+  "networks": [
+    {
+      "name": "telangana_experience_guide"
+    }
+  ],
+  "actions": {
+    "version": 1
+  }
+}
