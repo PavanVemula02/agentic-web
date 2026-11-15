@@ -269,13 +269,13 @@ export class ReservationBook {
   /**
    * Make a confirmation code that no other booking uses.
    *
-   * :return: a code such as "TW-7KQ2"
+   * :return: a code such as "AWS-7KQ2"
    */
   newCode() {
     // Leave out 0, O, 1 and I, which are easy to mix up.
     const letters = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-    let code = "TW-";
-    while (code.length < 7) code += letters[Math.floor(Math.random() * letters.length)];
+    let code = "AWS-";
+    while (code.length < 8) code += letters[Math.floor(Math.random() * letters.length)];
     for (const booking of this.bookings) {
       if (booking.code === code) return this.newCode();
     }

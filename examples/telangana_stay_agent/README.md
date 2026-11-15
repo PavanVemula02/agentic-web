@@ -1,14 +1,11 @@
-# Tidewhistle Guesthouse, agentified
+# Anantha Weekend Stay Agent
 
-The Tidewhistle Guesthouse website with an assistant built into the page. The
-site has rooms, an availability search, a booking form and "Manage my booking",
-plus a page of house policies. The assistant runs in the visitor's browser,
-uses the visitor's own LLM API key, answers from the site's real data and calls
-the site's own functions to search, price, fill in the booking form, book and
-cancel. It can also ask the Marrow Point Harbor Tours assistant about tours,
-and other agent sites can call its network (see "Linked site"). It uses plain
-HTML, CSS and JavaScript modules with no dependencies or build step. It was
-made from `examples/guesthouse` with the agentify-website skill.
+Anantha Weekend Stay is a fictional hackathon demonstration located in
+Shankarpalle, Telangana. Its browser-based agent helps visitors explore
+accommodation options and complete simulated reservations.
+
+No real reservation is created, no payment is collected, and availability
+exists only in the browser's in-memory demonstration state..
 
 From the repository root, run:
 

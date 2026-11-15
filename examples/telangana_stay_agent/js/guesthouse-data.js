@@ -1,101 +1,119 @@
 /**
- * The guesthouse's rooms, extras, fees, house rules and existing bookings.
+ * Accommodation, extras, fees, rules and synthetic demo bookings for
+ * Anantha Weekend Stay in Shankarpalle, Telangana.
  *
- * Prices are whole US cents. policies.html shows the same fees and
- * cancellation tiers to guests, so change both together.
+ * Monetary values are stored as whole paise. For example, 520000 paise
+ * represents INR 5,200. Keep policies.html synchronized with fees and
+ * cancellation tiers defined here.
+ *
+ * This is a fictional hackathon demonstration. No real accommodation is
+ * reserved and no payment is collected.
  */
 export class GuesthouseData {
-  /** The rooms. The weekend rate is for Friday and Saturday nights. */
+  /**
+   * Accommodation at Anantha Weekend Stay.
+   *
+   * The weekend rate applies to Friday and Saturday nights.
+   * The demonstration currently uses the same weekday and weekend rate.
+   */
   static ROOMS = [
     {
-      id: "harbor-view",
-      name: "Harbor View Room",
+      id: "garden-suite",
+      name: "Garden Suite",
       beds: "1 queen bed",
       maxGuests: 2,
-      nightlyRate: 14500,
-      weekendRate: 17500,
-      amenities: ["Bay window over the harbor", "Shower room", "Writing desk"],
-      accessibility: "Second floor, up 22 stairs. There is no elevator.",
+      nightlyRate: 520000,
+      weekendRate: 520000,
+      amenities: [
+        "Breakfast",
+        "Wi-Fi",
+        "Air conditioning",
+        "Step-free entrance",
+      ],
+      accessibility:
+        "Ground floor with step-free access from the main entrance.",
       petFriendly: false,
     },
     {
-      id: "lantern",
-      name: "Lantern Room",
-      beds: "1 double bed and 1 single daybed",
-      maxGuests: 3,
-      nightlyRate: 12500,
-      weekendRate: 15000,
-      amenities: ["Skylight under the eaves", "Shower room", "Reading nook"],
-      accessibility: "Top floor, up two flights of stairs, with low beams.",
-      petFriendly: false,
-    },
-    {
-      id: "garden",
-      name: "Garden Room",
-      beds: "1 queen bed",
-      maxGuests: 2,
-      nightlyRate: 13500,
-      weekendRate: 16000,
-      amenities: ["Private patio", "Roll-in shower with grab rails", "Own door to the garden"],
-      accessibility: "Ground floor, step-free from the side gate.",
-      petFriendly: true,
-    },
-    {
-      id: "net-loft",
-      name: "Net Loft Suite",
-      beds: "1 king bed and 1 double sofa bed",
+      id: "family-cottage",
+      name: "Family Cottage",
+      beds: "1 queen bed and 2 single beds",
       maxGuests: 4,
-      nightlyRate: 21000,
-      weekendRate: 25000,
-      amenities: ["Separate sitting room", "Kitchenette", "Bath and shower"],
-      accessibility: "First floor, up 14 stairs. There is no elevator.",
+      nightlyRate: 760000,
+      weekendRate: 760000,
+      amenities: [
+        "Breakfast",
+        "Wi-Fi",
+        "Kitchen",
+        "Private patio",
+      ],
+      accessibility:
+        "Ground floor, but the entrance has two steps and is not step-free.",
       petFriendly: false,
     },
   ];
 
-  /** Extras. Each price is per "guest per night", per "night" or per "stay". */
+  /**
+   * Optional extras.
+   *
+   * Each price is charged per guest per night, per night or per stay,
+   * according to the value of the `per` property.
+   */
   static EXTRAS = [
     {
       id: "breakfast",
-      name: "Harbor breakfast",
-      price: 1400,
+      name: "Telangana breakfast",
+      price: 50000,
       per: "guest per night",
     },
     {
       id: "parking",
       name: "Parking space",
-      price: 1000,
+      price: 20000,
       per: "night",
     },
     {
       id: "late-checkout",
       name: "Late checkout until 1 pm",
-      price: 2500,
+      price: 75000,
       per: "stay",
     },
   ];
 
-  /** The cleaning fee, once per stay. */
-  static CLEANING_FEE = 3000;
+  /**
+   * Cleaning fee of INR 500, charged once per stay.
+   */
+  static CLEANING_FEE = 50000;
 
-  /** The Marrow Point tourist tax, per guest per night. */
-  static TOURIST_TAX = 250;
+  /**
+   * No tourist tax is charged in this fictional demonstration.
+   *
+   * Keep this field because the existing price calculator expects it.
+   */
+  static TOURIST_TAX = 0;
 
-  /** Stays that include a Saturday night need at least this many nights. */
+  /**
+   * Stays that include a Saturday night require at least this many nights.
+   */
   static SATURDAY_MIN_NIGHTS = 2;
 
-  /** The longest stay guests can book online. */
+  /**
+   * Longest stay that visitors can create through the demonstration.
+   */
   static MAX_NIGHTS = 14;
 
   /**
-   * Cancellation tiers, checked in order. A tier applies when check-in is at
-   * least minDays away. feeShare is the part of the room charge we keep.
+   * Cancellation tiers, checked in order.
+   *
+   * A tier applies when check-in is at least `minDays` away.
+   * `feeShare` is the portion of the room charge kept as the
+   * demonstration cancellation fee.
    */
   static CANCELLATION_TIERS = [
     {
       minDays: 7,
       feeShare: 0,
-      rule: "7 or more days before check-in: free",
+      rule: "7 or more days before check-in: free cancellation",
     },
     {
       minDays: 2,
@@ -105,148 +123,84 @@ export class GuesthouseData {
     {
       minDays: 0,
       feeShare: 1,
-      rule: "the day before or the day of check-in: the full room charge",
+      rule:
+        "the day before or the day of check-in: the full room charge",
     },
   ];
 
-  /** Arrival times guests can choose. Check-in is from 3 pm to 9 pm. */
-  static ARRIVAL_TIMES = ["3 pm to 5 pm", "5 pm to 7 pm", "7 pm to 9 pm", "After 9 pm (self check-in)"];
+  /**
+   * Available arrival windows.
+   *
+   * Regular check-in is from 3 pm to 9 pm. The final option represents
+   * simulated self check-in for the hackathon demonstration.
+   */
+  static ARRIVAL_TIMES = [
+    "3 pm to 5 pm",
+    "5 pm to 7 pm",
+    "7 pm to 9 pm",
+    "After 9 pm (self check-in)",
+  ];
 
   /**
-   * Bookings other guests have made. daysFromToday is the number of days from
-   * today to check-in, so the bookings move with the date.
+   * Synthetic bookings used only to demonstrate availability conflicts.
+   *
+   * These records contain no real customer information. `daysFromToday`
+   * is the number of days between the current date and check-in, allowing
+   * the demonstration bookings to move with the current date.
    */
   static EXISTING_BOOKINGS = [
     {
-      code: "TW-7KQ2",
-      roomId: "harbor-view",
-      firstName: "Iris",
-      lastName: "Pell",
-      daysFromToday: 0,
-      nights: 3,
-      guests: 2,
-    },
-    {
-      code: "TW-M3XD",
-      roomId: "garden",
-      firstName: "Tomas",
-      lastName: "Reyes",
-      daysFromToday: 1,
-      nights: 4,
-      guests: 2,
-    },
-    {
-      code: "TW-C8VN",
-      roomId: "lantern",
-      firstName: "Ada",
-      lastName: "Marsh",
+      code: "AWS-7KQ2",
+      roomId: "garden-suite",
+      firstName: "Demo",
+      lastName: "Guest",
       daysFromToday: 2,
       nights: 2,
-      guests: 3,
+      guests: 2,
     },
     {
-      code: "TW-9PLF",
-      roomId: "net-loft",
-      firstName: "June",
-      lastName: "Okoro",
-      daysFromToday: 2,
-      nights: 4,
+      code: "AWS-M3XD",
+      roomId: "family-cottage",
+      firstName: "Sample",
+      lastName: "Visitor",
+      daysFromToday: 7,
+      nights: 3,
       guests: 4,
     },
     {
-      code: "TW-R2TB",
-      roomId: "harbor-view",
-      firstName: "Leo",
-      lastName: "Fenn",
-      daysFromToday: 6,
-      nights: 4,
-      guests: 2,
-    },
-    {
-      code: "TW-W6HJ",
-      roomId: "garden",
-      firstName: "Mina",
-      lastName: "Castell",
-      daysFromToday: 9,
-      nights: 7,
+      code: "AWS-C8VN",
+      roomId: "garden-suite",
+      firstName: "Test",
+      lastName: "Traveller",
+      daysFromToday: 14,
+      nights: 2,
       guests: 1,
     },
     {
-      code: "TW-4DZS",
-      roomId: "lantern",
-      firstName: "Noel",
-      lastName: "Ashby",
-      daysFromToday: 11,
-      nights: 3,
-      guests: 2,
-    },
-    {
-      code: "TW-K5GY",
-      roomId: "net-loft",
-      firstName: "Ruth",
-      lastName: "Delacroix",
-      daysFromToday: 15,
-      nights: 6,
+      code: "AWS-9PLF",
+      roomId: "family-cottage",
+      firstName: "Example",
+      lastName: "Family",
+      daysFromToday: 21,
+      nights: 4,
       guests: 3,
-    },
-    {
-      code: "TW-P7NE",
-      roomId: "harbor-view",
-      firstName: "Sam",
-      lastName: "Whitlow",
-      daysFromToday: 19,
-      nights: 2,
-      guests: 2,
-    },
-    {
-      code: "TW-B3QA",
-      roomId: "garden",
-      firstName: "Ola",
-      lastName: "Brennan",
-      daysFromToday: 27,
-      nights: 10,
-      guests: 2,
-    },
-    {
-      code: "TW-H8WD",
-      roomId: "harbor-view",
-      firstName: "Cora",
-      lastName: "Baptiste",
-      daysFromToday: 33,
-      nights: 5,
-      guests: 2,
-    },
-    {
-      code: "TW-F2RU",
-      roomId: "lantern",
-      firstName: "Bea",
-      lastName: "Laurent",
-      daysFromToday: 41,
-      nights: 6,
-      guests: 2,
-    },
-    {
-      code: "TW-T9MC",
-      roomId: "net-loft",
-      firstName: "Hal",
-      lastName: "Quint",
-      daysFromToday: 48,
-      nights: 3,
-      guests: 4,
     },
   ];
 
   /**
-   * Find a room or an extra by its id.
+   * Find a room or an extra by its ID.
    *
-   * :param list: ROOMS or EXTRAS
-   * :param id: the id to look for
-   * :return: the matching item, or null
+   * @param {Array<object>} list ROOMS or EXTRAS.
+   * @param {string} id ID to locate.
+   * @returns {object|null} Matching item, or null when it is not found.
    */
   static findById(list, id) {
     for (const item of list) {
-      if (item.id === id) return item;
+      if (item.id === id) {
+        return item;
+      }
     }
+
     return null;
   }
 }

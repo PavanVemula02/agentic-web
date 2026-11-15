@@ -1,0 +1,555 @@
+TAP version 13
+# Subtest: network is valid, has no demo mode and keeps its grounding, peer and partner rules
+ok 1 - network is valid, has no demo mode and keeps its grounding, peer and partner rules
+  ---
+  duration_ms: 18.172948
+  type: 'test'
+  ...
+# Subtest: agentTools are registered local-only actions with no TODO left
+ok 2 - agentTools are registered local-only actions with no TODO left
+  ---
+  duration_ms: 5.711964
+  type: 'test'
+  ...
+# Subtest: front agent reads page state through a website tool
+not ok 3 - front agent reads page state through a website tool
+  ---
+  duration_ms: 19.788084
+  type: 'test'
+  location: '/workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2610:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    2 !== 4
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 4
+  actual: 2
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.testReadActionRunsAsTool (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:839:12)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: booking needs confirmation and a decline changes nothing
+not ok 4 - booking needs confirmation and a decline changes nothing
+  ---
+  duration_ms: 5.715759
+  type: 'test'
+  location: '/workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2611:1'
+  failureType: 'testCodeFailure'
+  error: 'Invalid arguments.roomId.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    fail (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:34:30)
+    validateData (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:52:91)
+    validateData (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:40:7)
+    file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:126:7
+    Array.map (<anonymous>)
+    ActionRegistry.prepare (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:121:38)
+    AgentifiedSiteTest.arrangeIrreversibleState (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:385:27)
+    TestContext.testIrreversibleActionNeedsConfirmation (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:864:30)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: cancelling needs confirmation and a decline changes nothing
+not ok 5 - cancelling needs confirmation and a decline changes nothing
+  ---
+  duration_ms: 8.272327
+  type: 'test'
+  location: '/workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2612:1'
+  failureType: 'testCodeFailure'
+  error: "Cannot read properties of undefined (reading 'status')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.testCancelNeedsConfirmation (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:903:40)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: each irreversible action has its own dialog words
+ok 6 - each irreversible action has its own dialog words
+  ---
+  duration_ms: 1.476206
+  type: 'test'
+  ...
+# Subtest: the page has no template text left
+not ok 7 - the page has no template text left
+  ---
+  duration_ms: 3.4832
+  type: 'test'
+  location: '/workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2614:1'
+  failureType: 'testCodeFailure'
+  error: 'index.html has no assistant section.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    TestContext.testAssistantSectionIsFilledIn (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:958:12)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: the booking dialog shows the real call and changes nothing
+not ok 8 - the booking dialog shows the real call and changes nothing
+  ---
+  duration_ms: 1.093511
+  type: 'test'
+  location: '/workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2615:1'
+  failureType: 'testCodeFailure'
+  error: 'Invalid arguments.roomId.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    fail (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:34:30)
+    validateData (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:52:91)
+    validateData (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:40:7)
+    file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:126:7
+    Array.map (<anonymous>)
+    ActionRegistry.prepare (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:121:38)
+    AgentifiedSiteTest.arrangeIrreversibleState (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:385:27)
+    TestContext.testDialogShowsTheRealCall (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:969:30)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+  ...
+# Subtest: the cancel dialog shows the booking and today's fee
+not ok 9 - the cancel dialog shows the booking and today's fee
+  ---
+  duration_ms: 1.046514
+  type: 'test'
+  location: '/workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2616:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + "We couldn't find a booking with that code and last name."
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual: "We couldn't find a booking with that code and last name."
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.testCancelDialogShowsTheRealCall (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:1058:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: only the booking dialog's confirm button confirms
+not ok 10 - only the booking dialog's confirm button confirms
+  ---
+  duration_ms: 1.501974
+  type: 'test'
+  location: '/workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2617:1'
+  failureType: 'testCodeFailure'
+  error: 'Invalid arguments.roomId.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    fail (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:34:30)
+    validateData (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:52:91)
+    validateData (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:40:7)
+    file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:126:7
+    Array.map (<anonymous>)
+    ActionRegistry.prepare (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:121:38)
+    AgentifiedSiteTest.arrangeIrreversibleState (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:385:27)
+    TestContext.testDialogAnswers (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:1077:30)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+  ...
+# Subtest: only the cancel dialog's confirm button confirms
+not ok 11 - only the cancel dialog's confirm button confirms
+  ---
+  duration_ms: 13.775548
+  type: 'test'
+  location: '/workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2618:1'
+  failureType: 'testCodeFailure'
+  error: "Cannot read properties of undefined (reading 'feeCents')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.testCancelDialogAnswers (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:1116:54)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: a refused call opens no dialog, and the model gets the site's reason
+not ok 12 - a refused call opens no dialog, and the model gets the site's reason
+  ---
+  duration_ms: 3.637762
+  type: 'test'
+  location: '/workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2619:1'
+  failureType: 'testCodeFailure'
+  error: 'field.after is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    BookingPage.showErrors (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/js/booking-page.js:749:13)
+    BookingPage.showBooking (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/js/booking-page.js:622:14)
+    BookingPage.findBooking (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/js/booking-page.js:511:10)
+    StubElement.dispatch (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/stub_element.mjs:141:7)
+    AgentifiedSiteTest.lookUpOnPage (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:599:44)
+    TestContext.testRefusedCallsOpenNoDialog (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:1318:24)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: a partner's action with the same name gets the runtime's dialog
+ok 13 - a partner's action with the same name gets the runtime's dialog
+  ---
+  duration_ms: 1.218344
+  type: 'test'
+  ...
+# Subtest: a chat form that bundles a booking runs nothing
+not ok 14 - a chat form that bundles a booking runs nothing
+  ---
+  duration_ms: 1.157912
+  type: 'test'
+  location: '/workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2621:1'
+  failureType: 'testCodeFailure'
+  error: 'Invalid arguments.roomId.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    fail (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:34:30)
+    validateData (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:52:91)
+    validateData (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:40:7)
+    file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:126:7
+    Array.map (<anonymous>)
+    ActionRegistry.prepare (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:121:38)
+    AgentifiedSiteTest.arrangeIrreversibleState (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:385:27)
+    TestContext.testBundledFormRunsNothing (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:1170:30)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+  ...
+# Subtest: other chat forms with several actions get the runtime's dialog
+ok 15 - other chat forms with several actions get the runtime's dialog
+  ---
+  duration_ms: 0.287827
+  type: 'test'
+  ...
+# Subtest: the consent card gets focus, and focus then returns to the chat
+ok 16 - the consent card gets focus, and focus then returns to the chat
+  ---
+  duration_ms: 0.566427
+  type: 'test'
+  ...
+# Subtest: a visitor typing in the page's form keeps focus when a consent card appears
+ok 17 - a visitor typing in the page's form keeps focus when a consent card appears
+  ---
+  duration_ms: 0.247692
+  type: 'test'
+  ...
+# Subtest: the state reader gives data, today and page state, and no other guests
+not ok 18 - the state reader gives data, today and page state, and no other guests
+  ---
+  duration_ms: 0.813088
+  type: 'test'
+  location: '/workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2625:1'
+  failureType: 'testCodeFailure'
+  error: 'field.after is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    BookingPage.showErrors (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/js/booking-page.js:749:13)
+    BookingPage.showBooking (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/js/booking-page.js:622:14)
+    BookingPage.findBooking (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/js/booking-page.js:511:10)
+    StubElement.dispatch (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/stub_element.mjs:141:7)
+    AgentifiedSiteTest.lookUpOnPage (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:599:44)
+    TestContext.testStateReader (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:1435:24)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+  ...
+# Subtest: the sample queries can be answered
+not ok 19 - the sample queries can be answered
+  ---
+  duration_ms: 19.475883
+  type: 'test'
+  location: '/workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2626:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    1 !== 4
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 4
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.testSampleQueriesHaveAnswers (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:1535:12)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: a search leaves the page as it was and filters by guests
+not ok 20 - a search leaves the page as it was and filters by guests
+  ---
+  duration_ms: 0.819921
+  type: 'test'
+  location: '/workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2627:1'
+  failureType: 'testCodeFailure'
+  error: 'No "Book the Lantern Room" button in #search-results.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    AgentifiedSiteTest.button (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:616:11)
+    TestContext.testSearchLeavesPageAsItWas (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:1567:24)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: a quote matches hand-worked prices and changes nothing
+not ok 21 - a quote matches hand-worked prices and changes nothing
+  ---
+  duration_ms: 6.458729
+  type: 'test'
+  location: '/workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2628:1'
+  failureType: 'testCodeFailure'
+  error: 'Invalid arguments.roomId.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    fail (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:34:30)
+    validateData (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:52:91)
+    validateData (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:40:7)
+    file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:126:7
+    Array.map (<anonymous>)
+    ActionRegistry.prepare (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:121:38)
+    dispatchToolCall (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/runner.js:355:30)
+    AgentifiedSiteTest.call (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:346:12)
+    async AgentifiedSiteTest.run (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:357:21)
+    async TestContext.testQuoteMatchesHandWorkedPrices (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:1611:21)
+  ...
+# Subtest: stay limits accept the limit and refuse past it
+not ok 22 - stay limits accept the limit and refuse past it
+  ---
+  duration_ms: 7.924473
+  type: 'test'
+  location: '/workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2629:1'
+  failureType: 'testCodeFailure'
+  error: 'Invalid arguments.roomId.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    fail (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:34:30)
+    validateData (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:52:91)
+    validateData (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:40:7)
+    file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:126:7
+    Array.map (<anonymous>)
+    ActionRegistry.prepare (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:121:38)
+    dispatchToolCall (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/runner.js:355:30)
+    AgentifiedSiteTest.call (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:346:12)
+    async AgentifiedSiteTest.run (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:357:21)
+    async TestContext.testStayLimits (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:1731:23)
+  ...
+# Subtest: filling the booking form changes the form and refusals change nothing
+not ok 23 - filling the booking form changes the form and refusals change nothing
+  ---
+  duration_ms: 6.014952
+  type: 'test'
+  location: '/workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2630:1'
+  failureType: 'testCodeFailure'
+  error: 'Invalid arguments.roomId.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    fail (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:34:30)
+    validateData (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:52:91)
+    validateData (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:40:7)
+    file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:126:7
+    Array.map (<anonymous>)
+    ActionRegistry.prepare (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:121:38)
+    dispatchToolCall (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/runner.js:355:30)
+    AgentifiedSiteTest.call (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:346:12)
+    async AgentifiedSiteTest.run (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:357:21)
+    async TestContext.testFillBookingForm (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:1844:21)
+  ...
+# Subtest: the look-up finds the demo booking and refuses near misses
+not ok 24 - the look-up finds the demo booking and refuses near misses
+  ---
+  duration_ms: 0.846621
+  type: 'test'
+  location: '/workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2631:1'
+  failureType: 'testCodeFailure'
+  error: 'field.after is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    BookingPage.showErrors (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/js/booking-page.js:749:13)
+    BookingPage.showBooking (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/js/booking-page.js:622:14)
+    BookingPage.findBooking (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/js/booking-page.js:511:10)
+    StubElement.dispatch (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/stub_element.mjs:141:7)
+    AgentifiedSiteTest.lookUpOnPage (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:599:44)
+    TestContext.testLookUpBooking (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:1916:24)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+  ...
+# Subtest: cancellation fees follow each tier
+not ok 25 - cancellation fees follow each tier
+  ---
+  duration_ms: 10.840547
+  type: 'test'
+  location: '/workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2632:1'
+  failureType: 'testCodeFailure'
+  error: 'Invalid arguments.roomId.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    fail (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:34:30)
+    validateData (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:52:91)
+    validateData (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:40:7)
+    file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:126:7
+    Array.map (<anonymous>)
+    ActionRegistry.prepare (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:121:38)
+    dispatchToolCall (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/runner.js:355:30)
+    AgentifiedSiteTest.call (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:346:12)
+    async TestContext.testCancellationFeeTiers (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:1988:20)
+    async Test.run (node:internal/test_runner/test:1054:7)
+  ...
+# Subtest: an approved booking stores the same record as the page form
+not ok 26 - an approved booking stores the same record as the page form
+  ---
+  duration_ms: 4.584108
+  type: 'test'
+  location: '/workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2633:1'
+  failureType: 'testCodeFailure'
+  error: 'field.after is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    BookingPage.showErrors (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/js/booking-page.js:749:13)
+    BookingPage.placeBooking (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/js/booking-page.js:432:12)
+    StubElement.dispatch (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/stub_element.mjs:141:7)
+    AgentifiedSiteTest.submitBookingForm (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:572:45)
+    TestContext.testPlaceBookingMatchesPageForm (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2088:41)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  ...
+# Subtest: refused bookings change nothing
+not ok 27 - refused bookings change nothing
+  ---
+  duration_ms: 20.17125
+  type: 'test'
+  location: '/workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2634:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(before.search.includes("Garden Room"))
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.testPlaceBookingRefusalsChangeNothing (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2179:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: guest details at the site's limits are accepted
+not ok 28 - guest details at the site's limits are accepted
+  ---
+  duration_ms: 12.120669
+  type: 'test'
+  location: '/workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2635:1'
+  failureType: 'testCodeFailure'
+  error: 'Invalid arguments.roomId.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    fail (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:34:30)
+    validateData (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:52:91)
+    validateData (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:40:7)
+    file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:126:7
+    Array.map (<anonymous>)
+    ActionRegistry.prepare (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:121:38)
+    dispatchToolCall (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/runner.js:355:30)
+    AgentifiedSiteTest.call (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:346:12)
+    async TestContext.testGuestDetailLimits (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2255:20)
+    async Test.run (node:internal/test_runner/test:1054:7)
+  ...
+# Subtest: an approved cancellation matches the page's cancel button
+not ok 29 - an approved cancellation matches the page's cancel button
+  ---
+  duration_ms: 8.814829
+  type: 'test'
+  location: '/workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2636:1'
+  failureType: 'testCodeFailure'
+  error: 'Invalid arguments.roomId.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    fail (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:34:30)
+    validateData (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:52:91)
+    validateData (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:40:7)
+    file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:126:7
+    Array.map (<anonymous>)
+    ActionRegistry.prepare (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:121:38)
+    dispatchToolCall (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/runner.js:355:30)
+    AgentifiedSiteTest.call (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:346:12)
+    async TestContext.testCancelBookingMatchesPageButton (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2290:20)
+    async Test.run (node:internal/test_runner/test:1054:7)
+  ...
+# Subtest: refused cancellations change nothing
+not ok 30 - refused cancellations change nothing
+  ---
+  duration_ms: 1.16761
+  type: 'test'
+  location: '/workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2637:1'
+  failureType: 'testCodeFailure'
+  error: 'field.after is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    BookingPage.showErrors (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/js/booking-page.js:749:13)
+    BookingPage.placeBooking (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/js/booking-page.js:432:12)
+    StubElement.dispatch (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/stub_element.mjs:141:7)
+    AgentifiedSiteTest.submitBookingForm (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:572:45)
+    TestContext.testCancelBookingRefusalsChangeNothing (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2382:24)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  ...
+# Subtest: no result, refusal or dialog shows another guest's booking or private details
+not ok 31 - no result, refusal or dialog shows another guest's booking or private details
+  ---
+  duration_ms: 6.048873
+  type: 'test'
+  location: '/workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2638:1'
+  failureType: 'testCodeFailure'
+  error: 'Invalid arguments.roomId.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    fail (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:34:30)
+    validateData (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:52:91)
+    validateData (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:40:7)
+    file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:126:7
+    Array.map (<anonymous>)
+    ActionRegistry.prepare (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/actions.js:121:38)
+    dispatchToolCall (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/runtime/runner.js:355:30)
+    AgentifiedSiteTest.call (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:346:12)
+    async TestContext.testNoOtherGuestsInResults (file:///workspaces/agentic-web/agentic-web/examples/telangana_stay_agent/tests/agentified.test.mjs:2479:20)
+    async Test.run (node:internal/test_runner/test:1054:7)
+  ...
+1..31
+# tests 31
+# suites 0
+# pass 7
+# fail 24
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 318.999818
