@@ -7,10 +7,11 @@ import { GuesthouseData } from "./guesthouse-data.js";
  */
 export class PriceCalculator {
   /** Formats dollar amounts such as "$145.00". */
-  static DOLLARS = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
+  static DOLLARS = new Intl.NumberFormat("en-IN", {
+  style: "currency",
+  currency: "INR",
+  maximumFractionDigits: 0,
+});
 
   /**
    * Price a stay in a room. The stay must already follow the booking rules.

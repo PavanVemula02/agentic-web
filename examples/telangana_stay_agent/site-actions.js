@@ -1,28 +1,28 @@
 // Registers this website's operations with the agent runtime.
-// agent-manifest.json loads this module through "actions.module". Only the names in
-// "actions.agentTools" become model tools, called website_<name>.
 //
-// Each action wraps an operation of the running booking page (App.page) or the house
-// policies reader. The business rules stay in js/reservation-book.js and js/stay-rules.js.
-// Operations return {ok: false, reason, field, errors} when they refuse input, before
-// changing anything. A throw is reported as "unknown".
-// js/app.js is imported by the same URL that index.html uses, so there is one page state.
+// agent-manifest.json loads this module through "actions.module". Only the
+// names listed in "actions.agentTools" become model-callable website_* tools.
+//
+// Each action wraps an operation of the running booking page or the policy
+// reader. Business rules remain in reservation-book.js and stay-rules.js.
+// The assistant therefore uses the same validation and state as the manual UI.
+
 import { App } from "./js/app.js";
 import { GuesthouseData } from "./js/guesthouse-data.js";
 import { HousePolicies } from "./js/house-policies.js";
 
 /**
- * Describes the guesthouse's operations as actions the agents can call.
+ * Describes Anantha Weekend Stay operations as actions agents can call.
  *
- * Each action wraps a function the page already uses, so the assistant and the manual
- * UI share one set of rules. The runtime validates arguments against inputSchema before
- * execute runs, and asks the visitor to confirm "irreversible" actions first.
+ * The runtime validates action arguments against each inputSchema before
+ * execute runs. Actions marked irreversible require explicit browser
+ * confirmation.
  */
 class SiteActions {
   /**
-   * Register every site action with the runtime.
+   * Register every website action with the runtime.
    *
-   * :param actions: The runtime registry facade with a register(definition) method.
+   * @param {object} actions Runtime action-registry facade.
    */
   static registerActions(actions) {
     actions.register(SiteActions.readStateAction());
@@ -36,102 +36,108 @@ class SiteActions {
   }
 
   /**
-   * List the ids of one of the site's catalogs, for an enum.
+   * Return the IDs from one of the website's catalogs.
    *
-   * :param list: GuesthouseData.ROOMS or GuesthouseData.EXTRAS.
-   * :return: The ids.
+   * @param {Array<object>} list Rooms or extras.
+   * @returns {Array<string>} Catalog IDs.
    */
   static ids(list) {
-    const ids = [];
-    for (const item of list) {
-      ids.push(item.id);
-    }
-    return ids;
+    return list.map((item) => item.id);
   }
 
   /**
-   * Describe a date argument.
+   * Build a date field schema.
    *
-   * :param description: What the date is.
-   * :return: The schema.
+   * @param {string} description Field description.
+   * @returns {object} JSON Schema field.
    */
   static dateField(description) {
     return {
       type: "string",
       format: "date",
-      description: description,
+      description,
     };
   }
 
   /**
-   * Describe the guest count. The bound is looser than the site's, so the site's own
-   * message explains a count that no room fits.
+   * Build the guest-count schema.
    *
-   * :return: The schema.
+   * The upper bound is deliberately broader than room capacity so the
+   * website's business rules can return a useful domain-specific message.
+   *
+   * @returns {object} JSON Schema field.
    */
   static guestsField() {
     return {
       type: "integer",
-      minimum: 0,
+      minimum: 1,
       maximum: 20,
-      description: "Number of guests the visitor gave, counted as the house policies say.",
+      description:
+        "Number of guests. The website checks this against accommodation capacity.",
     };
   }
 
   /**
-   * Describe a room id, limited to the real rooms.
+   * Build the accommodation-ID schema from the current website data.
    *
-   * :return: The schema.
+   * @returns {object} JSON Schema field.
    */
   static roomField() {
     return {
       type: "string",
       enum: SiteActions.ids(GuesthouseData.ROOMS),
-      description: "Room id from website_get_guesthouse_state.",
+      description:
+        "Accommodation ID returned by website_get_guesthouse_state.",
     };
   }
 
   /**
-   * Describe a list of extra ids, limited to the real extras. The site refuses one listed twice.
+   * Build the extras-list schema from current website data.
    *
-   * :return: The schema.
+   * @returns {object} JSON Schema field.
    */
   static extrasField() {
     return {
       type: "array",
-      maxItems: 10,
+      maxItems: GuesthouseData.EXTRAS.length,
       items: {
         type: "string",
         enum: SiteActions.ids(GuesthouseData.EXTRAS),
       },
-      description: "Extra ids from website_get_guesthouse_state, each once. Leave out for none.",
+      description:
+        "Optional extra IDs returned by website_get_guesthouse_state. Each ID may appear only once.",
     };
   }
 
   /**
-   * Describe a stay in one room: room, dates, guests and extras.
+   * Return the shared properties used by stay-related actions.
    *
-   * :return: The schema's properties.
+   * @returns {object} JSON Schema properties.
    */
   static stayProperties() {
     return {
       roomId: SiteActions.roomField(),
-      checkIn: SiteActions.dateField("Check-in date the visitor wants, YYYY-MM-DD."),
-      checkOut: SiteActions.dateField("Check-out date the visitor wants, YYYY-MM-DD."),
+      checkIn: SiteActions.dateField(
+        "Requested check-in date in YYYY-MM-DD format.",
+      ),
+      checkOut: SiteActions.dateField(
+        "Requested check-out date in YYYY-MM-DD format.",
+      ),
       guests: SiteActions.guestsField(),
       extras: SiteActions.extrasField(),
     };
   }
 
   /**
-   * Describe the read action that returns the site's data and the page's state.
+   * Define the website-state reader.
    *
-   * :return: The action definition.
+   * @returns {object} Action definition.
    */
   static readStateAction() {
     return {
       name: "get_guesthouse_state",
-      description: "Read the rooms (beds, guest limit, rates, amenities, access, pets), extras, fees, stay limits, arrival times, cancellation fees, today's date, the home page's facts (contact, payment, changing a booking, tours, getting here, demo note) and the page's state: the stay in the booking form with its total, the last search on the page, the latest booking made in this tab and the booking Manage my booking shows. It does not show other guests' bookings or which rooms are free.",
+      description:
+        "Read the current Anantha Weekend Stay accommodation, rates, amenities, accessibility information, extras, fees, stay limits, arrival times, cancellation rules, current date and visible page state. It includes the booking form, latest search, latest demo booking and booking currently displayed under Manage my booking. It never reveals other visitors' private booking records.",
       effect: "read",
       inputSchema: {
         type: "object",
@@ -143,23 +149,24 @@ class SiteActions {
   }
 
   /**
-   * Return a fresh copy of the page state.
+   * Return a fresh copy of public website and page state.
    *
-   * :return: The page state as plain JSON data.
+   * @returns {object} Current website state.
    */
   static readState() {
     return App.page.readState();
   }
 
   /**
-   * Describe the read action that returns the house policies page.
+   * Define the policy-page reader.
    *
-   * :return: The action definition.
+   * @returns {object} Action definition.
    */
   static readPoliciesAction() {
     return {
       name: "get_house_policies",
-      description: "Read the house policies page: check-in and check-out, length of stay, cancellation and changes, fees and payment, pets, quiet hours, children and who counts as a guest, and accessibility. Returns each section's text, table rows and links.",
+      description:
+        "Read Anantha Weekend Stay policies from the same policy page visitors can open. Returns policy sections, text, table rows and links. The site is a fictional hackathon demonstration and creates no real reservation or payment.",
       effect: "read",
       inputSchema: {
         type: "object",
@@ -171,32 +178,36 @@ class SiteActions {
   }
 
   /**
-   * Read the policies page, which the visitor can also open from the menu.
+   * Read the public policy page.
    *
-   * :return: The page's sections.
-   * :raises Error: When the page cannot be loaded; the runtime then reports "unknown".
+   * @returns {Promise<object>} Parsed policy sections.
    */
   static readPolicies() {
     return HousePolicies.read();
   }
 
   /**
-   * Describe the availability search, which reads and changes nothing.
+   * Define the availability-search action.
    *
-   * :return: The action definition.
+   * @returns {object} Action definition.
    */
   static searchRoomsAction() {
     return {
       name: "search_rooms",
-      description: "Find the rooms that are free for a stay and fit the guests, each with its price for the nights, cleaning fee and tourist tax, without extras. Changes nothing on the page. Returns ok false with the site's reason when the dates or guests break a booking rule.",
+      description:
+        "Find simulated accommodations available for the requested dates and guest count. Returns each matching accommodation and its deterministic price without changing the page. Returns ok false when the dates or guest count violate website rules.",
       effect: "read",
       inputSchema: {
         type: "object",
         additionalProperties: false,
         required: ["checkIn", "checkOut", "guests"],
         properties: {
-          checkIn: SiteActions.dateField("Check-in date the visitor wants, YYYY-MM-DD."),
-          checkOut: SiteActions.dateField("Check-out date the visitor wants, YYYY-MM-DD."),
+          checkIn: SiteActions.dateField(
+            "Requested check-in date in YYYY-MM-DD format.",
+          ),
+          checkOut: SiteActions.dateField(
+            "Requested check-out date in YYYY-MM-DD format.",
+          ),
           guests: SiteActions.guestsField(),
         },
       },
@@ -205,24 +216,25 @@ class SiteActions {
   }
 
   /**
-   * Search through the site's own availability check.
+   * Search availability through the website's existing operation.
    *
-   * :param args: The validated arguments with checkIn, checkOut and guests.
-   * :return: The free rooms with prices, or ok false with a reason.
+   * @param {object} args Validated search arguments.
+   * @returns {object} Matching accommodation or refusal.
    */
   static searchRooms(args) {
     return App.page.searchRooms(args);
   }
 
   /**
-   * Describe the price quote for one room, which reads and changes nothing.
+   * Define the stay-quotation action.
    *
-   * :return: The action definition.
+   * @returns {object} Action definition.
    */
   static quoteStayAction() {
     return {
       name: "quote_stay",
-      description: "Price a stay in one room with extras, line by line, after checking the booking rules and that the room is free. Changes nothing on the page. Returns ok false with the site's reason otherwise.",
+      description:
+        "Calculate a deterministic line-by-line INR quote for one accommodation and optional extras. Checks stay rules and simulated availability without changing page state.",
       effect: "read",
       inputSchema: {
         type: "object",
@@ -235,25 +247,25 @@ class SiteActions {
   }
 
   /**
-   * Price a stay through the site's own quote.
+   * Calculate a quote through the website's existing operation.
    *
-   * :param args: The validated stay.
-   * :return: The priced stay, or ok false with a reason.
+   * @param {object} args Validated stay arguments.
+   * @returns {object} Quote or refusal.
    */
   static quoteStay(args) {
     return App.page.quoteStay(args);
   }
 
   /**
-   * Describe a reversible write the agent may run without a confirmation dialog.
+   * Define the reversible booking-form update.
    *
-   * :return: The action definition.
+   * @returns {object} Action definition.
    */
   static fillBookingFormAction() {
     return {
       name: "fill_booking_form",
-      description: "Put a stay (room, dates, guests and extras) in the booking form on the page and show its price there, so the visitor can finish the booking on the page. Replaces the stay already in the form, but not the visitor's name or contact details. It does not book. Returns the form's new stay and total, or ok false with the site's reason, changing nothing.",
-      // "write" runs immediately. The visitor can change or clear the form on the page.
+      description:
+        "Place an accommodation, dates, guest count and optional extras into the visible booking form and display its calculated total. This does not create a booking and does not change visitor contact details.",
       effect: "write",
       inputSchema: {
         type: "object",
@@ -266,24 +278,25 @@ class SiteActions {
   }
 
   /**
-   * Fill the booking form through the page's own draft function.
+   * Fill the visible booking form.
    *
-   * :param args: The validated stay.
-   * :return: The booking form's new stay and total, or ok false with a reason.
+   * @param {object} args Validated stay arguments.
+   * @returns {object} Updated form state or refusal.
    */
   static fillBookingForm(args) {
     return App.page.fillDraft(args);
   }
 
   /**
-   * Describe the booking look-up, which reads and changes nothing.
+   * Define the demonstration-booking lookup.
    *
-   * :return: The action definition.
+   * @returns {object} Action definition.
    */
   static lookUpBookingAction() {
     return {
       name: "look_up_booking",
-      description: "Find a booking by its confirmation code and the last name on it, as Manage my booking does. Returns the booking, its status, the page's note and what cancelling it today costs (cancellation.feeCents), or ok false when no booking matches. Changes nothing on the page.",
+      description:
+        "Find a demonstration booking by confirmation code and matching last name. Returns booking status and the current cancellation fee when a match exists. It does not reveal unrelated bookings.",
       effect: "read",
       inputSchema: {
         type: "object",
@@ -292,13 +305,17 @@ class SiteActions {
         properties: {
           code: {
             type: "string",
+            minLength: 1,
             maxLength: 12,
-            description: "Confirmation code the visitor gave, such as TW-XXXX.",
+            description:
+              "Anantha Weekend Stay demonstration confirmation code, such as AWS-7KQ2.",
           },
           lastName: {
             type: "string",
+            minLength: 1,
             maxLength: 60,
-            description: "The last name on the booking, as the visitor gave it.",
+            description:
+              "Last name associated with the demonstration booking.",
           },
         },
       },
@@ -307,90 +324,105 @@ class SiteActions {
   }
 
   /**
-   * Look up a booking through the site's own check of code and last name.
+   * Look up a demonstration booking.
    *
-   * :param args: The validated arguments with code and lastName.
-   * :return: The booking and today's cancellation fee, or ok false with a reason.
+   * @param {object} args Validated lookup arguments.
+   * @returns {object} Matching booking or refusal.
    */
   static lookUpBooking(args) {
     return App.page.lookUpBooking(args.code, args.lastName);
   }
 
   /**
-   * Describe the booking, which the visitor must confirm.
+   * Define the confirmation-gated demonstration-booking operation.
    *
-   * :return: The action definition.
+   * @returns {object} Action definition.
    */
   static placeBookingAction() {
-    const properties = SiteActions.stayProperties();
-    properties.firstName = {
-      type: "string",
-      minLength: 1,
-      maxLength: 60,
-      description: "The first name the visitor gave.",
+    const properties = {
+      ...SiteActions.stayProperties(),
+      firstName: {
+        type: "string",
+        minLength: 1,
+        maxLength: 60,
+        description: "Visitor's first name.",
+      },
+      lastName: {
+        type: "string",
+        minLength: 1,
+        maxLength: 60,
+        description: "Visitor's last name.",
+      },
+      email: {
+        type: "string",
+        minLength: 3,
+        maxLength: 120,
+        description:
+          "Email entered for this browser-only demonstration booking.",
+      },
+      phone: {
+        type: "string",
+        maxLength: 20,
+        description: "Optional phone number.",
+      },
+      arrival: {
+        type: "string",
+        enum: GuesthouseData.ARRIVAL_TIMES.slice(),
+        description:
+          "Arrival window explicitly selected by the visitor.",
+      },
+      requests: {
+        type: "string",
+        maxLength: 500,
+        description:
+          "Optional special requests supplied by the visitor.",
+      },
     };
-    properties.lastName = {
-      type: "string",
-      minLength: 1,
-      maxLength: 60,
-      description: "The last name the visitor gave.",
-    };
-    properties.email = {
-      type: "string",
-      minLength: 1,
-      maxLength: 120,
-      description: "The email the visitor gave.",
-    };
-    properties.phone = {
-      type: "string",
-      maxLength: 20,
-      description: "The phone number the visitor gave. Optional.",
-    };
-    properties.arrival = {
-      type: "string",
-      enum: GuesthouseData.ARRIVAL_TIMES.slice(),
-      description: "When the visitor will arrive. Ask them; never choose for them.",
-    };
-    properties.requests = {
-      type: "string",
-      maxLength: 600,
-      description: "Special requests the visitor gave. Optional. The house policies say what belongs here.",
-    };
+
     return {
       name: "place_booking",
-      description: "Book a stay. The browser asks the visitor to confirm first. Nothing is paid online: guests pay at the guesthouse. Returns the booking with its confirmation code.",
-      // "irreversible" makes the runtime open a confirmation dialog before execute runs.
+      description:
+        "Create an in-memory demonstration booking. The browser must show the proposed accommodation, dates, guests and total and receive explicit visitor confirmation before execution. No real accommodation is reserved and no payment is collected.",
       effect: "irreversible",
       inputSchema: {
         type: "object",
         additionalProperties: false,
-        required: ["roomId", "checkIn", "checkOut", "guests", "firstName", "lastName", "email", "arrival"],
-        properties: properties,
+        required: [
+          "roomId",
+          "checkIn",
+          "checkOut",
+          "guests",
+          "firstName",
+          "lastName",
+          "email",
+          "arrival",
+        ],
+        properties,
       },
       execute: SiteActions.placeBooking,
     };
   }
 
   /**
-   * Book through the same function the page's own booking form uses.
+   * Create the confirmed demonstration booking.
    *
-   * :param args: The validated, visitor-confirmed arguments.
-   * :return: The booking with its code, or {ok: false, reason} when the site refuses it.
-   * :raises Error: Only on an unexpected failure; the runtime then reports "unknown".
+   * @param {object} args Validated, visitor-confirmed booking arguments.
+   * @returns {object} Booking receipt or refusal.
    */
   static placeBooking(args) {
     return App.page.placeStay(args);
   }
 
   /**
-   * Describe the cancellation, which the visitor must confirm.
+   * Define the confirmation-gated cancellation operation.
    *
-   * :return: The action definition.
+   * @returns {object} Action definition.
    */
   static cancelBookingAction() {
     return {
       name: "cancel_booking",
-      description: "Cancel a booking under the cancellation policy. The site refuses if today's fee differs from expectedFeeCents. The browser asks the visitor to confirm first. Returns the cancelled booking and the page's note on its fee.",
+      description:
+        "Cancel a matching demonstration booking under the displayed cancellation policy. The site rejects execution if the supplied expected fee differs from the current deterministic fee. Browser confirmation is required.",
       effect: "irreversible",
       inputSchema: {
         type: "object",
@@ -401,19 +433,22 @@ class SiteActions {
             type: "string",
             minLength: 1,
             maxLength: 12,
-            description: "Confirmation code the visitor gave.",
+            description:
+              "Anantha Weekend Stay demonstration confirmation code.",
           },
           lastName: {
             type: "string",
             minLength: 1,
             maxLength: 60,
-            description: "The last name on the booking, as the visitor gave it.",
+            description:
+              "Last name associated with the demonstration booking.",
           },
           expectedFeeCents: {
             type: "integer",
             minimum: 0,
-            maximum: 10000000,
-            description: "cancellation.feeCents from website_look_up_booking in this turn.",
+            maximum: 100000000,
+            description:
+              "Cancellation fee in minor currency units returned by website_look_up_booking during the current interaction.",
           },
         },
       },
@@ -422,16 +457,19 @@ class SiteActions {
   }
 
   /**
-   * Cancel through the same function the page's own cancel button uses.
+   * Cancel the confirmed demonstration booking.
    *
-   * :param args: The validated, visitor-confirmed arguments.
-   * :return: The cancelled booking, or {ok: false, reason} when the site refuses it.
-   * :raises Error: Only on an unexpected failure; the runtime then reports "unknown".
+   * @param {object} args Validated, visitor-confirmed cancellation arguments.
+   * @returns {object} Cancellation receipt or refusal.
    */
   static cancelBooking(args) {
-    return App.page.cancelStay(args.code, args.lastName, args.expectedFeeCents);
+    return App.page.cancelStay(
+      args.code,
+      args.lastName,
+      args.expectedFeeCents,
+    );
   }
 }
 
-// The runtime calls the module's registerActions export.
+// The runtime calls this named module export.
 export const registerActions = SiteActions.registerActions;
