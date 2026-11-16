@@ -5,12 +5,13 @@
       "name": "telangana_stay_assistant",
       "front_man": "stay_coordinator",
       "hocon": "./telangana_stay_assistant.network.json",
-      "description": "Explore accommodation, check simulated availability, calculate INR prices, and create, look up or cancel browser-only demo bookings at Anantha Weekend Stay.",
+      "description": "Explore accommodation, check simulated availability, calculate INR prices, discover fictional local activities, and create, look up or cancel browser-only demo bookings at Anantha Weekend Stay.",
       "tags": [
         "agentified-website",
         "accommodation",
         "telangana",
-        "demo-booking"
+        "demo-booking",
+        "peer-discovery"
       ],
       "sample_queries": [
         "Which accommodation has step-free access for two guests?",
@@ -20,7 +21,8 @@
         "Create a demo booking for the Garden Suite for two guests. My name is Pavan Vemula and I will arrive between 3 pm and 5 pm.",
         "How much would it cost to cancel booking AWS-7KQ2 under the last name Guest today?",
         "Does the Family Cottage allow pets?",
-        "What are the cancellation rules for a demo booking?"
+        "What are the cancellation rules for a demo booking?",
+        "Recommend a morning activity for two people under INR 4,000."
       ]
     }
   ],
@@ -29,11 +31,13 @@
     "mock": false,
     "byok_router": "https://api.otari.ai/api/v1"
   },
-  "allowed_peers": [],
+  "allowed_peers": [
+    "http://localhost:8081"
+  ],
   "peer_policy": {
     "mode": "closed",
     "deny_origins": [],
-    "note": "No remote peer network is enabled yet. Add only verified partner origins after testing consent, CORS and bridge behavior."
+    "note": "Calls only Telangana Experience Guide after the visitor approves the consent card."
   },
   "agent_mcp": {
     "protocol": "nsdeploy-agent-mcp/v1",
