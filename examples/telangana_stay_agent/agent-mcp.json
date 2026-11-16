@@ -3,5 +3,5 @@
   "network": "telangana_stay_assistant",
   "front_man": "stay_coordinator",
   "available": false,
-  "reason": "This is a static bundle; a public MCP facade requires an application host."
+  "reason": "This is a static browser bundle. A public MCP facade requires an application host."
 }
