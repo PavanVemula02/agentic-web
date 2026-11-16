@@ -436,7 +436,7 @@ export class SiteHarness {
   /**
    * Press the "Add to basket" button of one departure in the page's results list.
    *
-   * :param heading: The departure's heading, such as "2 pm · Seal Rocks Cruise".
+   * :param heading: The departure heading, such as "3:30 pm · Family Nature Trail".
    * :raises Error: When the list has no such departure with an Add button.
    */
   static addOnPage(heading) {

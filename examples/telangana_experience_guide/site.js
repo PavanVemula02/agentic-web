@@ -16,7 +16,7 @@ export class AssistantMount {
   /**
    * The first chat message once the visitor has a key: what the assistant can do here.
    */
-  static GREETING = "I can check our trips, times and prices, fill your basket, and reserve or cancel trips for you. I can also ask Tidewhistle Guesthouse what it offers and how to book.";
+  static GREETING = "I can explain our fictional experiences, check simulated departures and INR prices, manage your demo basket, and create, look up or cancel browser-only demo reservations.";
 
   /**
    * The confirmation dialog's words for each irreversible action. Name each button after

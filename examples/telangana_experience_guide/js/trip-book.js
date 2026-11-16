@@ -250,7 +250,7 @@ export class TripBook {
   }
 
   /**
-   * Name a trip, such as "Seal Rocks Cruise on Thu, Nov 12, 2026 at 2 pm".
+   * Name an activity, such as "Family Nature Trail on Thu, Nov 12, 2026 at 3:30 pm".
    * A date or time that isn't valid for the tour is left out.
    *
    * :param trip: tourId, date and time

@@ -1,202 +1,681 @@
-## Connected agent networks
+# Anantha Weekend Stay Assistant
 
-No remote partner network is enabled in the Day 3 build.
+Anantha Weekend Stay is a fictional accommodation website created for the Open
+Agentic Web Challenge.
 
-A Telangana Experience Guide can be connected later after its public network,
-bridge page, CORS behavior, consent flow and allowed origin have been tested.
-The current stay assistant does not claim to book tours or arrange transport.
+The site demonstrates how a browser-based assistant can use the same
+deterministic operations as the normal website UI to:
 
-From the repository root, run:
+- explain accommodation and policies;
+- check simulated availability;
+- calculate INR quotes;
+- update the visible booking form;
+- create browser-only demo bookings;
+- look up and cancel matching demo bookings;
+- contact Telangana Experience Guide for fictional activity discovery after
+  the visitor approves a consent card.
 
-```shell
-node skills/agentify-website/scripts/serve_site.mjs examples/guesthouse_agentified --port 8080
+The application uses plain HTML, CSS and JavaScript modules. It has no
+application backend, database, payment system or production reservation
+integration.
+
+## Demonstration notice
+
+This project is a hackathon demonstration.
+
+- No real accommodation is reserved.
+- No payment is requested or collected.
+- Availability is simulated.
+- Bookings exist only in the current browser session.
+- Refreshing the page restores the original synthetic data.
+- No confirmation email, text message or phone call is sent.
+- All seeded booking records are synthetic.
+
+Do not use this project to accept real bookings or personal information without
+replacing the in-memory application state with an appropriately secured
+backend.
+
+## Accommodation catalog
+
+| ID | Accommodation | Capacity | Nightly price | Accessibility |
+|---|---|---:|---:|---|
+| `garden-suite` | Garden Suite | 2 guests | ₹5,200 | Step-free access |
+| `family-cottage` | Family Cottage | 4 guests | ₹7,600 | Review the current website description |
+
+Prices are stored internally as whole paise:
+
+```text
+₹5,200 = 520000 paise
+₹7,600 = 760000 paise
 ```
 
-Open http://127.0.0.1:8080/, the address it prints. The skill's server sends
-the CORS header on the public files, so other agent sites can call this one.
-Use the local server rather than opening `index.html` from disk: browsers
-don't run JavaScript modules from `file://` pages.
+The cleaning fee is:
 
-## Try it
-
-1. Browse the four rooms: beds, guest limits, rates, amenities, access and pets.
-2. Under **Check availability**, choose check-in and check-out dates and the
-   number of guests, then select **Search rooms** to see the free rooms and
-   what each stay costs.
-3. Select **Book the ...** on a result. The booking form takes the room, dates
-   and guests. Change any of them or tick extras, and the itemized price
-   updates.
-4. Add your name, email, an optional phone number, your arrival time and any
-   special requests, then select **Confirm booking** to get a confirmation code.
-5. Under **Manage my booking**, enter the code and your last name to see the
-   booking and what cancelling it today would cost, then cancel it.
-6. Under **Ask Anantha Weekend Stay**, open **⚙ AI model settings**, paste
-   your own [Otari](https://otari.ai) API key and select **Save and start**. The
-   site uses hosted Otari (`https://api.otari.ai/api/v1`) with
-   `alibaba/qwen3.8-flash` by default. For another provider, select it in the
-   panel, which fills in its provider URL and model. Then ask, for example,
-   "Is any room free for two guests for three nights starting three weeks from
-   today?" The browser asks you to confirm before the assistant books or
-   cancels anything. On `127.0.0.1` the runtime also keeps the key in a cookie
-   that other local sites can read, so use a key with a low spending limit.
-   Afterwards, delete the saved setup and close the tab: the tab keeps using the
-   key until it is closed.
-
-Other guests' bookings fill some nights over the next 60 days. To try
-**Manage my booking** without booking first, use code `TW-7KQ2` and last name
-`Pell`. That stay starts today, so cancelling it costs the full room charge.
-
-[policies.html](policies.html) covers check-in and check-out times, length of
-stay, the cancellation policy, fees and payment, pets, quiet hours, children
-and accessibility.
-
-Prices are in USD. Bookings stay in page memory: refreshing the page clears new
-bookings and cancellations and restores the existing ones. No payment is
-collected and nothing is booked. The assistant sends your messages and the page
-data it reads to the LLM provider you choose.
-
-## Linked site
-
-The assistant can ask the Marrow Point Harbor Tours assistant about boat trips,
-seal watching and sea-wall walks, at the network URL
-`http://localhost:8081/marrow_point_harbor_tours`. To try it, serve the tour site
-too, from the repository root in a second terminal:
-
-```shell
-node skills/agentify-website/scripts/serve_site.mjs examples/harbor_tours_agentified --port 8081 --open-as localhost
+```text
+₹500 = 50000 paise per stay
 ```
 
-Open the tour site at http://localhost:8081/, not 127.0.0.1. The two sites use
-two host names on purpose. On `127.0.0.1` and `localhost`, the runtime keeps
-saved keys in a cookie for the host name, on every port. On one host name, the
-tour site would get that cookie, key included.
+No tourist tax applies.
 
-Then ask this site's assistant about a boat trip. Before anything is sent, a
-card shows the tour site's name, its host and the first 140 characters of the
-request, and asks you to agree. Treat the request as sent to the tour site: its
-assistant reads it. This site's rules tell the assistant to ask only what the
-tour site can answer, such as what it offers and how to book, and never to put
-in names, emails, phone numbers or booking codes. The runtime does not filter
-the request, so check it on the card. **Always allow** skips the card, and that
-check, for the tour site until you reload the page. After you agree, the tour
-site's network runs in this browser, on your key and router, and costs more
-than the card's token estimate. It gets none of the tour site's own functions,
-so it should say what the tour site offers and point to its page for times and
-bookings. If you decline, nothing is sent to the tour site, and the assistant
-should say so and give the tour site's link from this page. It should do the
-same when the tour site is not running.
+## Optional extras
 
-Other agent sites can call this network at
-`http://127.0.0.1:8080/telangana_stay_assistant`. It then runs in their
-visitor's browser with none of this site's functions, and should point to this
-page for availability and bookings. Their visitor also gets a card for the
-tour site if this network asks it.
+| ID | Extra | Price |
+|---|---|---:|
+| `breakfast` | Breakfast | ₹500 per guest per night |
+| `parking` | Parking | ₹200 per night |
+| `late-checkout` | Late checkout | ₹750 per stay |
 
-## Tests
+The website JavaScript calculates authoritative totals. The assistant must use
+website-tool results rather than inventing or independently asserting a final
+price.
+
+## Worked quote examples
+
+For a two-night Garden Suite stay without extras:
+
+```text
+Room subtotal: ₹5,200 × 2 = ₹10,400
+Cleaning fee: ₹500
+Total: ₹10,900
+```
+
+For a two-night Family Cottage stay without extras:
+
+```text
+Room subtotal: ₹7,600 × 2 = ₹15,200
+Cleaning fee: ₹500
+Total: ₹15,700
+```
+
+## Run locally
+
+The commands below assume this folder is located at:
+
+```text
+examples/telangana_stay_agent
+```
+
+Run commands from the root of the `agentic-web` repository.
+
+### Serve Anantha Weekend Stay
+
+Use the repository server because it supplies the headers required for public
+agent artifacts and cross-origin partner calls:
+
+```bash
+node skills/agentify-website/scripts/serve_site.mjs \
+  examples/telangana_stay_agent \
+  --port 8080 \
+  --open-as 127.0.0.1
+```
+
+Open the Stay website at:
+
+```text
+http://127.0.0.1:8080/
+```
+
+Its public agent-network URL is:
+
+```text
+http://127.0.0.1:8080/telangana_stay_assistant
+```
+
+### Serve Telangana Experience Guide
+
+Run the connected guide in a second terminal:
+
+```bash
+node skills/agentify-website/scripts/serve_site.mjs \
+  examples/telangana_experience_guide \
+  --port 8081 \
+  --open-as localhost
+```
+
+Open the Guide website at:
+
+```text
+http://localhost:8081/
+```
+
+Its public agent-network URL is:
+
+```text
+http://localhost:8081/telangana_experience_guide
+```
+
+The two sites intentionally use different hostnames during local testing:
+
+```text
+Stay site: 127.0.0.1
+Guide site: localhost
+```
+
+Do not open either `index.html` directly through a `file://` URL. Browsers
+restrict JavaScript modules, network operations and cross-origin behavior on
+local file pages.
+
+## Try the Stay website
+
+1. Browse the Garden Suite and Family Cottage.
+2. Review beds, guest limits, rates, amenities, accessibility and pet
+   information.
+3. Under **Check availability**, select check-in and check-out dates and the
+   number of guests.
+4. Select **Search rooms**.
+5. Choose an available accommodation.
+6. Review the itemized INR quote.
+7. Add optional extras.
+8. Enter demonstration guest details and an arrival window.
+9. Select the booking button.
+10. Review and approve the browser confirmation dialog.
+11. Use the resulting `AWS-*` code and matching last name under
+    **Manage my booking**.
+12. Test cancellation and verify that declining confirmation changes nothing.
+
+## Synthetic booking examples
+
+The demonstration includes synthetic booking records with codes such as:
+
+```text
+AWS-7KQ2
+AWS-M3XD
+AWS-C8VN
+AWS-9PLF
+```
+
+For a lookup demonstration, use:
+
+```text
+Code: AWS-7KQ2
+Last name: Guest
+```
+
+A lookup requires both the complete code and its matching last name.
+
+The application must not reveal another visitor's:
+
+- booking code;
+- first name;
+- last name;
+- email address;
+- phone number;
+- special requests.
+
+## Stay policies
+
+[policies.html](policies.html) covers:
+
+- check-in and check-out;
+- length-of-stay limits;
+- cancellation;
+- fees and payment;
+- pets;
+- quiet hours;
+- children and guest counting;
+- accessibility;
+- hackathon demonstration limitations.
+
+The assistant reads this same policy page through
+`website_get_house_policies`.
+
+## Browser assistant
+
+The website includes a browser-based assistant.
+
+The assistant uses the model provider, model and API key configured by the
+visitor. The website host does not need to pay for model calls.
+
+Open **AI model settings** below the chat and configure a browser-compatible
+provider. The reference configuration uses:
+
+```text
+Provider URL: https://api.otari.ai/api/v1
+Model: alibaba/qwen3.8-flash
+```
+
+The selected provider must permit browser CORS requests.
+
+Never commit an API key into:
+
+- HTML;
+- JavaScript;
+- HOCON;
+- manifest JSON;
+- network JSON;
+- environment files;
+- Git history.
+
+For local testing, use a key with a low spending limit. Delete the saved setup
+when testing is complete, then close the browser tab.
+
+## Stay Assistant capabilities
+
+The assistant can:
+
+- read the current accommodation catalog;
+- compare capacity, amenities and accessibility;
+- read current stay policies;
+- check simulated availability;
+- calculate deterministic INR quotes;
+- update the visible booking form when asked;
+- create a browser-only demo booking after confirmation;
+- look up a booking using its code and matching last name;
+- cancel a matching booking after confirmation;
+- contact Telangana Experience Guide for fictional activity discovery after
+  visitor consent.
+
+The assistant must not invent:
+
+- accommodation;
+- prices;
+- availability;
+- dates or times;
+- amenities;
+- accessibility details;
+- policies;
+- booking codes;
+- booking status;
+- cancellation fees.
+
+## Consequential actions
+
+Creating and cancelling a demo booking are consequential actions.
+
+They must:
+
+1. be proposed through registered website actions;
+2. use schema-validated arguments;
+3. display the browser's confirmation dialog;
+4. execute only after explicit visitor approval;
+5. change nothing when approval is declined;
+6. return a structured receipt after execution.
+
+The assistant must not claim success until the corresponding website action
+returns a successful receipt.
+
+## Sample Stay Assistant prompts
+
+```text
+Which accommodation has step-free access for two guests?
+```
+
+```text
+What accommodation options are available and how much does each cost?
+```
+
+```text
+Is either accommodation available for two guests for two nights starting three
+weeks from today?
+```
+
+```text
+Put the Garden Suite in the booking form for two guests for two nights.
+```
+
+```text
+What are the cancellation rules for a demo booking?
+```
+
+```text
+How much would it cost to cancel booking AWS-7KQ2 under the last name Guest
+today?
+```
+
+## Connected agent network
+
+The Stay Assistant can contact Telangana Experience Guide after the visitor
+approves the partner consent card.
+
+Partner network:
+
+```text
+http://localhost:8081/telangana_experience_guide
+```
+
+Allowed partner origin:
+
+```text
+http://localhost:8081
+```
+
+The Stay manifest uses a closed peer policy. No other origin is authorized.
+
+The connection is one-way in the Day 5 and Day 6 builds:
+
+```text
+Anantha Weekend Stay
+        |
+        | Visitor-approved discovery request
+        v
+Telangana Experience Guide
+```
+
+Telangana Experience Guide does not call the Stay Assistant.
+
+## Partner consent flow
+
+Ask the Stay Assistant:
+
+```text
+Recommend a morning activity for two people under INR 4,000.
+```
+
+Before any request is sent, the runtime displays a consent card that:
+
+- identifies Telangana Experience Guide;
+- shows its origin;
+- displays up to the first 140 characters of the proposed request;
+- allows the visitor to approve or decline the contact.
+
+Approval permits one partner call for the visitor's message.
+
+Declining must:
+
+- send nothing to the partner;
+- produce no fabricated partner answer;
+- trigger no automatic retry;
+- leave the Stay website functional.
+
+## Partner privacy boundary
+
+A partner request may contain only information needed for activity discovery,
+such as:
+
+- party size;
+- budget;
+- preferred duration;
+- accessibility needs;
+- age suitability;
+- preferred time of day.
+
+A partner request must not contain:
+
+- first or last names;
+- email addresses;
+- phone numbers;
+- check-in or check-out dates;
+- special requests;
+- `AWS-*` booking codes;
+- `TEG-*` reservation codes;
+- payment information;
+- credentials.
+
+For example, this visitor message:
+
+```text
+My name is Pavan, my email is pavan@example.com and my booking code is
+AWS-7KQ2. Ask the guide for a morning activity for two people under ₹4,000.
+```
+
+should produce a sanitized partner request similar to:
+
+```text
+What morning activities suit two eligible visitors under INR 4,000?
+```
+
+The partner request should not include the name, email address or booking code.
+
+## Partner response limitations
+
+When loaded as a partner, Telangana Experience Guide receives none of its own
+local `website_*` actions. It answers only from its public network
+instructions.
+
+Therefore, the Stay Assistant must not claim that the partner:
+
+- checked live activity availability;
+- updated the Guide's basket;
+- created a reservation;
+- looked up a reservation;
+- cancelled a reservation.
+
+The Stay Assistant should direct visitors to the Guide's own page for current
+website-backed departures, prices and demo reservations.
+
+## Partner failure handling
+
+If the visitor declines consent, the partner does not answer, or the Guide
+server is unavailable, the Stay Assistant must:
+
+- say that the Guide did not answer;
+- avoid inventing a response;
+- avoid automatically retrying;
+- continue supporting normal accommodation functions.
+
+## Validate the partner
+
+Start both local servers, then run:
+
+```bash
+node skills/agentify-website/scripts/check_partner.mjs \
+  http://localhost:8081/telangana_experience_guide \
+  --origin http://127.0.0.1:8080
+```
+
+The check should end with:
+
+```text
+OK: http://localhost:8081/telangana_experience_guide can be called from http://127.0.0.1:8080.
+```
+
+## Network identity
+
+```text
+Brand: Anantha Weekend Stay Assistant
+Network: telangana_stay_assistant
+Front agent: stay_coordinator
+```
+
+The connected partner is:
+
+```text
+Brand: Telangana Experience Guide
+Network: telangana_experience_guide
+Front agent: experience_coordinator
+```
+
+## Build the Stay network
 
 From the repository root:
 
-```shell
-node --test "examples/guesthouse_agentified/tests/*.test.mjs"
+```bash
+node skills/agentify-website/scripts/build_network.mjs \
+  examples/telangana_stay_agent/telangana_stay_assistant.hocon \
+  --manifest examples/telangana_stay_agent/agent-manifest.json
 ```
 
-The tests use the real runtime and page code with a scripted model, and call no
-LLM provider. One test prints how many characters of system prompt and tool
-definitions each model call sends. After changing
-`telangana_stay_assistant.hocon` or `agent-manifest.json`, rebuild the generated
-files with the skill's `scripts/build_network.mjs` (see the comment at the top
-of the `.hocon` file).
+Check generated files:
 
-In a browser, also look up `AWS-7KQ2` / `Guest` and then `AWS-7KQ2` / `Wrong` in
-**Manage my booking**, and run the read check in "Check without a key" in the
-skill's `references/bundle_and_hosting.md` for `get_guesthouse_state`:
-`managedBooking` must be null.
+```bash
+node skills/agentify-website/scripts/build_network.mjs \
+  examples/telangana_stay_agent/telangana_stay_assistant.hocon \
+  --manifest examples/telangana_stay_agent/agent-manifest.json \
+  --check
+```
+
+The HOCON file is the source of truth. Do not independently edit generated
+network or discovery files.
+
+## Run the tests
+
+From the repository root:
+
+```bash
+node --test \
+  examples/telangana_stay_agent/tests/telangana.test.mjs
+```
+
+Expected:
+
+```text
+tests 13
+pass 13
+fail 0
+```
+
+Run the connected Guide's active test suite:
+
+```bash
+node --test \
+  examples/telangana_experience_guide/tests/telangana_experience.test.mjs
+```
+
+Expected:
+
+```text
+tests 9
+pass 9
+fail 0
+```
+
+The tests use the real runtime and page code with scripted models. They do not
+call an external LLM provider.
+
+## Public files
+
+Other agentic websites read these files:
+
+- `agent-manifest.json`
+- `telangana_stay_assistant.network.json`
+- `links.json`
+- `agent-mcp.json`
+- `.well-known/nsdeploy.json`
+- `.well-known/nsdeploy-agent.json`
+- `bridge/action-bridge.html`
+- `bridge/agent-manifest.json`
+
+Serve the public JSON and network files with the CORS headers required by the
+runtime.
+
+Do not block framing for `bridge/action-bridge.html`, because partner sites may
+load it in a hidden frame.
+
+The static MCP facade must remain marked unavailable unless a real application
+host provides it.
 
 ## Files
 
-- `index.html`: rooms, availability search, booking form, manage booking and
-  the assistant section.
-- `policies.html`: house policies and fees.
-- `styles.css`: shared responsive styles, with no external fonts or assets, and
-  the assistant's styles at the end.
-- `favicon.svg`: the site icon.
-- `js/app.js`: starts the page and keeps it as `App.page`.
-- `js/booking-page.js`: renders the page, connects its forms and buttons to the
-  operations, and gives the assistant the same operations.
-- `js/booking-facts.js`: rooms, prices and bookings as plain JSON, with the
-  words, dates and amounts the page shows.
-- `js/house-policies.js`: reads the policies from `policies.html` for the
-  assistant.
-- `js/reservation-book.js`: the bookings in memory and the booking operations.
-- `js/stay-rules.js`: the booking rules and their messages.
-- `js/price-calculator.js`: itemized prices.
-- `js/calendar.js`: date helpers, including the one place the site reads
-  today's date.
-- `js/guesthouse-data.js`: rooms, extras, fees, cancellation tiers and existing
-  bookings.
-- `site.js`: boots the assistant and shows its confirmation dialog.
-- `site-actions.js`: registers the operations the assistant can call.
-- `telangana_stay_assistant.hocon`: the agent network's source.
-- `telangana_stay_assistant.network.json`, `agent-mcp.json` and `.well-known/`:
-  generated from the `.hocon` file and the manifest. Do not edit them by hand.
-- `bridge/`: the page other agent sites load in a hidden frame before they run
-  this network, with its own manifest, which shares none of this site's
-  functions. The build writes it. Do not edit it by hand.
-- `agent-manifest.json` and `links.json`: the public files that describe the
-  network.
-- `runtime/`: the browser runtime, copied unchanged from the skill.
-- `tests/`: Node tests with a DOM stand-in and a scripted model.
+- `index.html`: accommodation cards, availability search, booking form, booking
+  management and assistant mount.
+- `policies.html`: house policies, INR fees and demonstration limitations.
+- `styles.css`: responsive page and assistant styles.
+- `favicon.svg`: site icon.
+- `js/app.js`: starts the page and exposes the shared running page.
+- `js/booking-page.js`: renders the page and connects forms and buttons.
+- `js/booking-facts.js`: converts application state into page-facing facts.
+- `js/house-policies.js`: reads `policies.html` for the assistant.
+- `js/reservation-book.js`: in-memory booking operations.
+- `js/stay-rules.js`: deterministic booking rules and validation messages.
+- `js/price-calculator.js`: itemized INR pricing.
+- `js/calendar.js`: date helpers and the single application clock.
+- `js/guesthouse-data.js`: accommodation, extras, fees and synthetic bookings.
+- `site.js`: starts the assistant and creates confirmation dialogs.
+- `site-actions.js`: registers model-callable `website_*` operations.
+- `telangana_stay_assistant.hocon`: agent-network source of truth.
+- `telangana_stay_assistant.network.json`: generated resolved network.
+- `agent-manifest.json`: network, peer policy, deployment and action metadata.
+- `links.json`: public link-discovery metadata.
+- `agent-mcp.json`: MCP availability metadata.
+- `.well-known/`: public discovery metadata.
+- `bridge/`: cross-site bridge files generated by the builder.
+- `runtime/`: browser runtime copied from the agentify-website skill.
+- `tests/`: Node integration tests and preserved migration references.
 
-`GuesthouseData` holds the rooms (id, name, beds, maximum guests, nightly and
-weekend rates in integer cents, amenities, accessibility and whether dogs are
-allowed), the extras, the cleaning fee, the tourist tax, the stay limits, the
-arrival times guests can choose, the cancellation tiers and the existing
-bookings, dated relative to today. A booking's arrival time must be one of
-`ARRIVAL_TIMES`, word for word: "3 pm to 5 pm", "5 pm to 7 pm",
-"7 pm to 9 pm" or "After 9 pm (self check-in)".
+## How booking data works
 
-`ReservationBook` runs the operations. Each one returns an object, and when the
-input breaks a rule that object holds `errors`, a message for each form field:
+A stay contains:
 
-- `search(checkIn, checkOut, guests)` lists the free rooms with a price for
-  each.
-- `quote(stay)` prices a room, dates, guests and extras, line by line.
-- `checkPlace(stay, guest)` checks a booking without placing it.
-- `place(stay, guest)` runs `checkPlace`, then books the stay and returns it
-  with a confirmation code.
-- `lookUp(code, lastName)` finds a booking and what cancelling it today costs.
-- `checkCancel(code, lastName, expectedFee)` checks a cancellation without
-  making it.
-- `cancel(code, lastName, expectedFee)` runs `checkCancel`, then cancels the
-  booking and applies the cancellation policy. `expectedFee` is the fee in
-  cents the guest was shown. The fee depends on today's date. If it is no
-  longer `expectedFee`, `cancel` refuses and changes nothing.
+```js
+{
+  roomId,
+  checkIn,
+  checkOut,
+  guests,
+  extras
+}
+```
 
-A stay has a `roomId`, the `checkIn` and `checkOut` dates as `"YYYY-MM-DD"`,
-`guests` as a whole number and `extras` as a list of extra ids, each listed
-once. A guest has `firstName`, `lastName`, `email`, an optional `phone`,
-`arrival` and optional `requests`. `place` trims the guest's details before it
-checks and stores them, as the booking form does.
+Dates use:
 
-`StayRules` checks that check-in is not in the past, check-out is after
-check-in, stays with a Saturday night are at least 2 nights, stays are at most
-14 nights, guests fit the room and the email is valid. `ReservationBook` also
-makes sure bookings for the same room don't overlap.
+```text
+YYYY-MM-DD
+```
 
-`BookingPage` calls these operations from the page. `chooseRoom(roomId)` and
-`updateDraft()` keep the booking draft (room, dates, guests and extras) in step
-with the booking form, and its price on screen. After a booking or a
-cancellation, the page runs the last search again and re-prices the draft.
-The assistant calls `readState()`, `searchRooms`, `quoteStay`, `fillDraft`,
-`lookUpBooking`, `placeStay` and `cancelStay` on `App.page`, and the
-confirmation dialog calls `checkBooking` and `checkCancel`. The page's own
-forms and buttons use `placeStay` and `cancelStay` too. These return
-`{ok: false, reason, field, errors}` when the site refuses, and change nothing.
+A guest contains:
 
-`Calendar.today()` is the only place the site reads the clock. To pin the date
-in tests, set `Calendar.fixedToday` to a date such as `"2026-11-10"` before
-creating a `ReservationBook`.
+```js
+{
+  firstName,
+  lastName,
+  email,
+  phone,
+  arrival,
+  requests
+}
+```
 
-Online payment, changing a booking, confirmation emails, durable storage,
-airport pickup, gift cards and tour bookings are not implemented. Replace the
-in-memory bookings with a backend before taking real bookings.
+Phone and special requests are optional.
+
+The arrival value must exactly match one option from
+`GuesthouseData.ARRIVAL_TIMES`.
+
+## Reservation operations
+
+`ReservationBook` provides deterministic operations for:
+
+- searching accommodation;
+- quoting a stay;
+- checking a proposed booking;
+- creating a demo booking;
+- looking up a matching booking;
+- checking cancellation;
+- cancelling a booking.
+
+Refused operations return structured errors and change nothing.
+
+A cancelled action receipt means the visitor declined browser confirmation and
+nothing happened.
+
+An unknown action receipt means the result is uncertain. The assistant must ask
+the visitor to inspect the page and must not automatically retry an
+irreversible action.
+
+## Booking rules
+
+`StayRules` checks:
+
+- check-in is not in the past;
+- check-out follows check-in;
+- stays containing Saturday satisfy the minimum length;
+- online stays do not exceed the configured maximum;
+- the guest count fits the selected accommodation;
+- the accommodation is available;
+- extra IDs are valid and not duplicated;
+- required guest details are present;
+- email and optional phone values are valid;
+- special requests remain within the configured limit.
+
+The manual UI and assistant call the same application operations.
+
+## Known limitations
+
+This project does not provide:
+
+- real accommodation;
+- real activity reservations;
+- live availability;
+- production payments;
+- authentication;
+- durable storage;
+- confirmation emails;
+- text notifications;
+- live weather;
+- transport;
+- gift cards;
+- discount codes;
+- production customer support;
+- background execution.
+
+Replace the in-memory state and demonstration operations before using this
+design for real visitors or transactions.
